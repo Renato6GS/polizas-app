@@ -1,0 +1,14 @@
+.fieldContainer {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.messageError {
+  color: red;
+  position: absolute;
+  width: 60%;
+  margin-top: 55px;
+  left: 41%;
+}

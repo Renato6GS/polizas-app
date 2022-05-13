@@ -1,3 +1,10 @@
+:root {
+  --black: #0D0E0E;
+  --white: #FFF;
+  --gray: #707070;
+  --light-gray: rgba(112,112,112, 0.3);
+}
+
 html,
 body {
   padding: 0;
@@ -13,4 +20,94 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+/* Probar añadir Roboto porque la letra en los inputs se ve bastante mal */
+
+.btn {
+  padding: 10px 16px;
+  color: var(--white);
+  border-radius: 8px;
+  background-color: var(--black);
+  font-weight: bold;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: ease-in-out .3s color,
+    ease-in-out .3s background-color;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.btn-empty {
+  background-color: transparent;
+  color: var(--black);
+}
+
+@media (hover: hover ) {
+  .btn:hover {
+    background-color: transparent;
+    color: var(--black);
+  }
+
+  .btn-empty:hover {
+    background-color: var(--black);
+    color: var(--white);
+  }
+}
+
+.label {
+  font-size: 1.2rem;
+  color: var(--black);
+  font-weight: bold;
+  margin-left: 0.5rem;
+  width: 30%;
+}
+
+.input {
+  border: 1px solid var(--gray);
+  padding: 16px 18px;
+  border-radius: 8px;
+  width: 60%;
+  font-size: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.input:focus {
+  border: 1px solid var(--black)
+}
+
+.input::placeholder {
+  font-style: italic;
+}
+
+.input::invalid {
+  border-color: 1px solid red;
+}
+
+.line-horizontal {
+  border-bottom: 1px solid var(--light-gray);
+  width: 100%;
+  margin: 3rem 0
+}
+
+/* TENER EN CUENTA QUE LOS H1, H2... TIENEN MARGENES IMPLÍCITOS */
+.title {
+  font-size: 2rem;
+  color: var(--black);
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+
+.sub-title {
+  font-size: 1.5rem;
+  color: var(--black);
+  font-weight: bold;
+  margin-bottom: 3rem;
+}
+
+.description {
+  font-size: 1.2rem;
+  color: var(--gray);
+  line-height: 32px;
 }

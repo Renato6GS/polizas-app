@@ -9,14 +9,17 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "2.8.8",
     "mssql": "8.1.0",
     "next": "12.1.6",
     "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "react-dom": "18.1.0",
+    "react-hook-form": "7.31.1",
+    "yup": "0.32.11"
   },
   "devDependencies": {
-    "eslint": "^8.15.0",
+    "eslint": "8.15.0",
     "eslint-config-next": "12.1.6",
-    "eslint-plugin-react": "^7.29.4"
+    "eslint-plugin-react": "7.29.4"
   }
 }

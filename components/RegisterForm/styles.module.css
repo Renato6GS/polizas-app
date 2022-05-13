@@ -2,20 +2,13 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  /* gap: 2.5rem; */
 }
 
 .inputsContainer {
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-}
-
-.fieldContainer {
-  width: 100%;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  position: relative;
 }
 
 .buttonsContainer {
