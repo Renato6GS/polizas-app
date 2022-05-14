@@ -1,10 +1,12 @@
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, string, number } from 'yup';
 import { messageErrors } from 'constants/messageErros';
+import { DAYS, MONTHS, YEARS } from 'constants/datesCombo';
 
 import styles from './styles.module.css';
 import FieldForm from 'components/FieldForm';
+import ComboBoxForm from 'components/ComboBoxForm';
 
 const schema = object()
   .shape({
@@ -23,6 +25,7 @@ export default function RegisterForm() {
     register,
     handleSubmit,
     formState: { errors },
+    control,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -55,11 +58,26 @@ export default function RegisterForm() {
           register={register}
           errors={errors}
         />
-        <select {...register('gender')}>
-          <option value='female'>female</option>
-          <option value='male'>male</option>
-          <option value='other'>other</option>
-        </select>
+        <section className={styles.birthdayDateContainer}>
+          <label className='label'>Fecha de nacimiento</label>
+          <div className={styles.comboBoxesContainer}>
+            <Controller
+              control={control}
+              name='comboDay'
+              render={({ field: { onChange } }) => <ComboBoxForm onChange={onChange} optionValues={DAYS} />}
+            />
+            <Controller
+              control={control}
+              name='comboMonth'
+              render={({ field: { onChange } }) => <ComboBoxForm onChange={onChange} optionValues={MONTHS} />}
+            />
+            <Controller
+              control={control}
+              name='comboYear'
+              render={({ field: { onChange } }) => <ComboBoxForm onChange={onChange} optionValues={YEARS} />}
+            />
+          </div>
+        </section>
       </div>
 
       <div className='line-horizontal'></div>
