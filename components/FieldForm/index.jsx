@@ -1,6 +1,6 @@
 import styles from './styles.module.css';
 
-export default function FieldForm({ id, label, placeholder, register, errors }) {
+export default function FieldForm({ id, label, placeholder, register, errors, typeInput = 'text' }) {
   return (
     <div className={styles.fieldContainer}>
       <label className='label' htmlFor={id}>
@@ -8,10 +8,10 @@ export default function FieldForm({ id, label, placeholder, register, errors }) 
       </label>
       <input
         className='input'
-        type='text'
+        type={typeInput}
         id={id}
         placeholder={placeholder}
-        {...register(id, { required: true, maxLength: 50 })}
+        {...register(id, { required: true })}
       />
       {errors[id]?.message && <p className={styles.messageError}>{errors[id].message}</p>}
     </div>

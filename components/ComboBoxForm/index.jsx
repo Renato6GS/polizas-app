@@ -12,7 +12,7 @@ export default function ComboBoxForm({ onChange, optionValues, prevValue = { id:
   const [query, setQuery] = useState('');
 
   useEffect(() => {
-    onChange(optionValues[0]);
+    onChange(optionValues[initialValue]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
