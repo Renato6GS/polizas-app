@@ -1,7 +1,7 @@
 export const config = {
   user: process.env.USER,
   password: process.env.PASS,
-  server: process.env.SERVER, // You can use 'localhost\\instance' to connect to named instance
+  server: process.env.SERVER,
   database: process.env.DATABASE,
   pool: {
     max: 10,

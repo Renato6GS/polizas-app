@@ -11,7 +11,7 @@ export default function Register() {
       <p className='description'>Ingrese la siguiente documentación para el inicio del proceso</p>
       <div className='line-horizontal'></div>
 
-      <h2 className='sub-title'>Datos del cliente</h2>
+      {/* <h2 className='sub-title'>Datos del cliente</h2> */}
       <RegisterForm />
     </Layout>
   );
