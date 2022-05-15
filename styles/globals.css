@@ -25,6 +25,7 @@ a {
 /* Probar añadir Roboto porque la letra en los inputs se ve bastante mal */
 
 .btn {
+  min-width: 110px;
   padding: 10px 16px;
   color: var(--white);
   border-radius: 8px;

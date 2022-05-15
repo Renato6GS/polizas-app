@@ -4,6 +4,10 @@
   flex-direction: column;
 }
 
+.subTitle {
+  margin: 0;
+}
+
 .inputsContainer {
   display: flex;
   flex-direction: column;

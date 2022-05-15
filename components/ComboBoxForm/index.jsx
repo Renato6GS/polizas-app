@@ -1,12 +1,20 @@
 /* eslint-disable indent */
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Combobox, Transition } from '@headlessui/react';
 import styles from './styles.module.css';
 import DropIcon from 'components/Icons/DropIcon';
 
-export default function ComboBoxForm({ onChange, optionValues }) {
-  const [selected, setSelected] = useState(optionValues[0]);
+export default function ComboBoxForm({ onChange, optionValues, prevValue = { id: '0' } }) {
+  let idNumber = 0;
+  idNumber = Number(prevValue.id.slice(3));
+  const initialValue = idNumber === 0 ? idNumber : idNumber - 1;
+  const [selected, setSelected] = useState(optionValues[initialValue]);
   const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    onChange(optionValues[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteredOptionValues =
     query === ''
@@ -39,7 +47,7 @@ export default function ComboBoxForm({ onChange, optionValues }) {
           leaveFrom='opacity-100'
           leaveTo='opacity-0'
           afterLeave={() => setQuery('')}>
-          <Combobox.Options className={styles.comboOption}>
+          <Combobox.Options className={styles.comboOptionContainer}>
             {filteredOptionValues.length === 0 && query !== '' ? (
               <div className={styles.nothingFound}>Sin resultados.</div>
             ) : (
