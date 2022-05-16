@@ -4,6 +4,7 @@ import { BRANCHES } from 'constants/branchesCombo.js';
 import { INSURERS } from 'constants/insurersCombo';
 import { DOCUMENTS } from 'constants/documentCombo';
 import { ECONOMIC_GROUPS } from 'constants/economicGroupsCombo';
+import { REVISORES } from 'constants/revisoresCombo';
 
 export async function insertDocumentWithoutClient({ query = {} }) {
   let success = false;
@@ -19,6 +20,7 @@ export async function insertDocumentWithoutClient({ query = {} }) {
     no_solicitud_acs,
     numero_de_poliza,
     numero_endoso_aseguradora,
+    id_revisor,
     precio,
   } = query;
 
@@ -26,6 +28,7 @@ export async function insertDocumentWithoutClient({ query = {} }) {
   const { idDB: id_tipo_de_doc } = DOCUMENTS.find((e) => e.id === tipo_de_documento);
   const { idDB: id_grupo_economico } = ECONOMIC_GROUPS.find((e) => e.id === grupo_economico);
   const { idDB: id_aseguradora } = INSURERS.find((e) => e.id === aseguradora);
+  const { idDB: id_rev } = REVISORES.find((e) => e.id === id_revisor);
 
   try {
     let pool = await sql.connect(config);
@@ -42,9 +45,13 @@ export async function insertDocumentWithoutClient({ query = {} }) {
       .input('vIdRamoDeSeguro', id_ramo_de_seguro)
       .input('vIdGrupoEconomico', id_grupo_economico)
       .input('vIdEstadoDelDocumento', 6)
+      .input('vIdRevisor', id_rev)
       .input('vPrecioPoliza', precio)
-      .input('vIdEstadoDelProceso', 10)
-      .input('vComentarioProceso', 'Registro de nuevo documento (generado automáticamente)')
+      .input('vIdEstadoDelProceso', 11)
+      .input(
+        'vComentarioProceso',
+        `Registro de nuevo documento y asignado al revisor ${id_rev} (generado automáticamente)`
+      )
       .input('vUsuario', 'renato')
       .execute('SP_NUEVO_REGISTRO_DE_DATOS_DE_POLIZA_CON_CLIENTE_EXISTENTE');
 

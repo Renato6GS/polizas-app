@@ -6,6 +6,7 @@ import { ECONOMIC_GROUPS } from 'constants/economicGroupsCombo';
 import { INSURERS } from 'constants/insurersCombo.js';
 
 import styles from './styles.module.css';
+import { REVISORES } from 'constants/revisoresCombo';
 
 export default function ThirdStepForm({ register, errors, title, control }) {
   return (
@@ -46,6 +47,19 @@ export default function ThirdStepForm({ register, errors, title, control }) {
             reules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <ComboBoxForm onChange={onChange} optionValues={ECONOMIC_GROUPS} prevValue={value} />
+            )}
+          />
+        </div>
+      </section>
+      <section className={styles.comoBoxSection}>
+        <label className='label'>Asignar revisor</label>
+        <div className={styles.comboBoxesContainer}>
+          <Controller
+            control={control}
+            name='comboRevisor'
+            reules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <ComboBoxForm onChange={onChange} optionValues={REVISORES} prevValue={value} />
             )}
           />
         </div>

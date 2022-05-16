@@ -5,6 +5,7 @@ export const registerDocumentWithoutClient = async ({ values }) => {
     comboDocument,
     comboEconomicGroups,
     comboInsurers,
+    comboRevisor,
     created_by: creado_por,
     no_cliente,
     no_solicitud_acs,
@@ -16,10 +17,11 @@ export const registerDocumentWithoutClient = async ({ values }) => {
   const idDoc = comboDocument.id;
   const idGro = comboEconomicGroups.id;
   const idIns = comboInsurers.id;
+  const idRev = comboRevisor.id;
 
   try {
     const success = await fetch(
-      `/api/insertDocumentWithoutClient?asunto_endoso=${asunto_endoso}&ramo_de_seguro=${idBra}&tipo_de_documento=${idDoc}&grupo_economico=${idGro}&aseguradora=${idIns}&creado_por=${creado_por}&no_cliente=${no_cliente}&no_solicitud_acs=${no_solicitud_acs}&numero_de_poliza=${numero_de_poliza}&numero_endoso_asegurador=${numero_endoso_aseguradora}&precio=${precio}`
+      `/api/insertDocumentWithoutClient?asunto_endoso=${asunto_endoso}&ramo_de_seguro=${idBra}&tipo_de_documento=${idDoc}&grupo_economico=${idGro}&aseguradora=${idIns}&creado_por=${creado_por}&no_cliente=${no_cliente}&no_solicitud_acs=${no_solicitud_acs}&numero_de_poliza=${numero_de_poliza}&numero_endoso_asegurador=${numero_endoso_aseguradora}&id_revisor=${idRev}&precio=${precio}`
     );
     const { estado } = await success.json();
     if (estado) {
