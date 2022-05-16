@@ -7,10 +7,12 @@ import styles from './styles.module.css';
 import FirstStepForm from './stepsForm/firstStepForm.jsx';
 import SecondStepForm from './stepsForm/SecondStepForm.jsx';
 import ThirdStepForm from './stepsForm/ThirdStepForm.jsx';
+import Loader from 'components/Loader';
 
 export default function RegisterForm() {
   const [formStep, setFormStep] = useState(0);
   const [isSure, setIsSure] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const ImSure = (value) => setIsSure(value);
 
@@ -36,6 +38,7 @@ export default function RegisterForm() {
 
   const onSubmit = async (values) => {
     if (!isSure) return false;
+    setLoading(true);
     console.log(values);
     const {
       apellidos_cliente,
@@ -82,41 +85,45 @@ export default function RegisterForm() {
       console.log('fallo el fetch');
       console.log(error);
     }
+    setLoading(false);
   };
 
   return (
-    <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)}>
-      <div className={styles.inputsContainer}>
-        {formStep === 0 && (
-          <FirstStepForm register={register} errors={errors} control={control} title='Datos sobre el cliente' />
-        )}
-        {formStep === 1 && (
-          <SecondStepForm register={register} errors={errors} control={control} title='Datos sobre la póliza' />
-        )}
+    <>
+      {loading && <Loader />}
+      <form className={styles.formContainer} onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.inputsContainer}>
+          {formStep === 0 && (
+            <FirstStepForm register={register} errors={errors} control={control} title='Datos sobre el cliente' />
+          )}
+          {formStep === 1 && (
+            <SecondStepForm register={register} errors={errors} control={control} title='Datos sobre la póliza' />
+          )}
 
-        {formStep === 2 && (
-          <ThirdStepForm register={register} errors={errors} control={control} title='Datos sobre la aseguradora' />
-        )}
-      </div>
+          {formStep === 2 && (
+            <ThirdStepForm register={register} errors={errors} control={control} title='Datos sobre la aseguradora' />
+          )}
+        </div>
 
-      <div className='line-horizontal'></div>
+        <div className='line-horizontal'></div>
 
-      <div className={styles.buttonsContainer}>
-        {formStep > 0 && (
-          <button onClick={previousStep} className='btn btn-empty'>
-            Regresar
-          </button>
-        )}
-        {formStep === 2 ? (
-          <button onClick={() => ImSure(true)} type='submit' className='btn'>
-            Enviar
-          </button>
-        ) : (
-          <button onClick={nextStep} type='button' className='btn'>
-            Siguiente
-          </button>
-        )}
-      </div>
-    </form>
+        <div className={styles.buttonsContainer}>
+          {formStep > 0 && (
+            <button onClick={previousStep} className='btn btn-empty'>
+              Regresar
+            </button>
+          )}
+          {formStep === 2 ? (
+            <button onClick={() => ImSure(true)} type='submit' className='btn'>
+              Enviar
+            </button>
+          ) : (
+            <button onClick={nextStep} type='button' className='btn'>
+              Siguiente
+            </button>
+          )}
+        </div>
+      </form>
+    </>
   );
 }
