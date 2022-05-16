@@ -57,6 +57,20 @@ export default function FirstStepForm({ register, errors, title, control }) {
           />
         </div>
       </section>
+      <FieldForm
+        id={'correo_cliente'}
+        label={'Correo electrónico del cliente'}
+        placeholder={'Ej.: Ramírezsalguero@gmail.com'}
+        register={register}
+        errors={errors}
+      />
+      <FieldForm
+        id={'direccion_cliente'}
+        label={'Dirección del cliente'}
+        placeholder={'Ej.: Ciudad de Guatemala...'}
+        register={register}
+        errors={errors}
+      />
       <section className={styles.comoBoxSection}>
         <label className='label'>Género</label>
         <div className={styles.comboBoxesContainer}>

@@ -51,6 +51,13 @@ export default function ThirdStepForm({ register, errors, title, control }) {
         </div>
       </section>
       <FieldForm id={'price'} label={'Precio'} placeholder={'Ej.: 3000'} register={register} errors={errors} />
+      <FieldForm
+        id={'created_by'}
+        label={'Creado por'}
+        placeholder={'Ingrese el nombre quien registra este documento'}
+        register={register}
+        errors={errors}
+      />
     </>
   );
 }

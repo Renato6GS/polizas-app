@@ -17,6 +17,14 @@ export const schema = object()
       .typeError(messageErrors['mStringTypeError'])
       .max(75, messageErrors['mStringMaxLength'])
       .required(messageErrors['mRequired']),
+    correo_cliente: string()
+      .email(messageErrors['mEmail'])
+      .max(75, messageErrors['mStringMaxLength'])
+      .required(messageErrors['mRequired']),
+    direccion_cliente: string()
+      .typeError(messageErrors['mStringTypeError'])
+      .max(75, messageErrors['mStringMaxLength'])
+      .required(messageErrors['mRequired']),
     numero_de_tel_cliente: string()
       .typeError(messageErrors['mStringTypeError'])
       .min(7, messageErrors['mNumberPhone'])
@@ -48,6 +56,10 @@ export const schema = object()
       .typeError(messageErrors['mNumberTypeError'])
       .positive(messageErrors['mPositive'])
       .max(9999999, messageErrors['mStringMaxLength'])
+      .required(messageErrors['mRequired']),
+    created_by: string()
+      .typeError(messageErrors['mStringTypeError'])
+      .max(100, messageErrors['mStringMaxLength'])
       .required(messageErrors['mRequired']),
   })
   .required();
