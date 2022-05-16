@@ -6,10 +6,13 @@ import ComboBoxForm from 'components/ComboBoxForm';
 
 import styles from './styles.module.css';
 
-export default function FirstStepForm({ register, errors, title, control }) {
+export default function FirstStepForm({ register, errors, title, control, isClientExist }) {
   return (
     <>
       <h2 className={styles.subTitle}>{title}</h2>
+      <span className={styles.clientExist}>
+        {isClientExist ? 'Este cliente ya existe. Puede saltar al siguiente formulario.' : ''}
+      </span>
       <FieldForm
         id={'no_cliente'}
         label={'Número de cliente'}
