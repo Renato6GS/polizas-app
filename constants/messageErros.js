@@ -6,4 +6,5 @@ export const messageErrors = {
   mRequired: 'No puede dejar vacío este campo.',
   mStringMaxLength: 'Acorte el número de caracteres de este campo.',
   mNumberPhone: 'Ingrese un número de teléfono válido.',
+  mEmail: 'Ingrese un correo electrónico válido',
 };
