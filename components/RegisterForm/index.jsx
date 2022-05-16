@@ -9,7 +9,7 @@ import SecondStepForm from './stepsForm/SecondStepForm.jsx';
 import ThirdStepForm from './stepsForm/ThirdStepForm.jsx';
 import Loader from 'components/Loader';
 import { useWatch } from 'hooks/useWatch.js';
-import { registerDocument } from 'db/form/registerDocument.js';
+import { registerDocumentAndClient } from 'db/form/registerDocumentAndClient.js';
 import { registerDocumentWithoutClient } from 'db/form/registerDocumentWithoutClient.js';
 
 export default function RegisterForm() {
@@ -46,7 +46,7 @@ export default function RegisterForm() {
     if (!isSure) return false;
     setLoading(true);
     if (isClientExist) registerDocumentWithoutClient({ values });
-    else registerDocument({ values });
+    else registerDocumentAndClient({ values });
     setLoading(false);
   };
 

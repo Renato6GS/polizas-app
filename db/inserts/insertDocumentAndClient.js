@@ -6,8 +6,9 @@ import { DAYS, MONTHS, YEARS } from 'constants/datesCombo.js';
 import { DOCUMENTS } from 'constants/documentCombo';
 import { ECONOMIC_GROUPS } from 'constants/economicGroupsCombo';
 import { GENDER } from 'constants/genderCombo';
+import { REVISORES } from 'constants/revisoresCombo';
 
-export async function insertDocument({ query = {} }) {
+export async function insertDocumentAndClient({ query = {} }) {
   let success = false;
 
   const {
@@ -30,6 +31,7 @@ export async function insertDocument({ query = {} }) {
     numero_de_poliza,
     numero_de_tel_cliente,
     numero_endoso_aseguradora,
+    id_revisor,
     precio,
   } = query;
 
@@ -41,6 +43,7 @@ export async function insertDocument({ query = {} }) {
   const { idDB: id_grupo_economico } = ECONOMIC_GROUPS.find((e) => e.id === grupo_economico);
   const { idDB: id_idGender } = GENDER.find((e) => e.id === id_gender);
   const { idDB: id_aseguradora } = INSURERS.find((e) => e.id === aseguradora);
+  const { idDB: id_rev } = REVISORES.find((e) => e.id === id_revisor);
 
   const birhdayDate = `${name_anio}-${name_mes}-${name_dia}`;
 
@@ -66,9 +69,13 @@ export async function insertDocument({ query = {} }) {
       .input('vIdRamoDeSeguro', id_ramo_de_seguro)
       .input('vIdGrupoEconomico', id_grupo_economico)
       .input('vIdEstadoDelDocumento', 6)
+      .input('vIdRevisor', id_rev)
       .input('vPrecioPoliza', precio)
-      .input('vIdEstadoDelProceso', 10)
-      .input('vComentarioProceso', 'Registro de nuevo documento (generado automáticamente)')
+      .input('vIdEstadoDelProceso', 11)
+      .input(
+        'vComentarioProceso',
+        `Registro de nuevo documento y asignado al revisor ${id_rev} (generado automáticamente)`
+      )
       .input('vUsuario', 'renato')
       .execute('SP_NUEVO_REGISTRO_DE_DATOS_DE_POLIZA');
 
