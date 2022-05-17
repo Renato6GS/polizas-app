@@ -2,6 +2,6 @@ import { insertDocumentWithoutClient } from 'db/inserts/insertDocumentWithoutCli
 
 export default async function handler(req, res) {
   const { query } = req;
-  let success = await insertDocumentWithoutClient({ query });
-  res.status(200).json({ estado: success });
+  let { resultado } = await insertDocumentWithoutClient({ query });
+  res.status(200).json({ id_poliza: resultado });
 }
