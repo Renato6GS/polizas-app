@@ -28,6 +28,7 @@ a {
   min-width: 110px;
   padding: 10px 16px;
   color: var(--white);
+  border: 2px solid var(--black);
   border-radius: 8px;
   background-color: var(--black);
   font-weight: bold;

@@ -1,0 +1,15 @@
+.table {
+  display: block;
+  max-width: 100%;
+  overflow-x: scroll;
+  /* border-spacing: 0px 1.2rem; */
+  border-spacing: 0px 2.2rem;
+}
+
+.td, .th {
+  margin: 0;
+  padding: 0.5rem;
+  width: 1%;
+  text-align: center;
+  border: none;
+}
