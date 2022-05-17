@@ -1,0 +1,14 @@
+.subtitleContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3rem;
+}
+
+.subTitle {
+  margin-bottom: 3rem;
+}
+
+.labelTitle {
+  font-size: 1.4rem;
+}

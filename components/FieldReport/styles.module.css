@@ -1,0 +1,6 @@
+.fieldContainer {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  gap: 8rem;
+}
