@@ -9,7 +9,7 @@ import { GENDER } from 'constants/genderCombo';
 import { REVISORES } from 'constants/revisoresCombo';
 
 export async function insertDocumentAndClient({ query = {} }) {
-  let success = false;
+  let resultado = '';
 
   const {
     apellidos_cliente,
@@ -35,6 +35,9 @@ export async function insertDocumentAndClient({ query = {} }) {
     precio,
   } = query;
 
+  console.log('esto es lo que viene:');
+  console.log(query);
+
   const { name: name_dia } = DAYS.find((e) => e.id === id_dia);
   const { name: name_mes } = MONTHS.find((e) => e.id === id_mes);
   const { name: name_anio } = YEARS.find((e) => e.id === id_anio);
@@ -44,12 +47,13 @@ export async function insertDocumentAndClient({ query = {} }) {
   const { idDB: id_idGender } = GENDER.find((e) => e.id === id_gender);
   const { idDB: id_aseguradora } = INSURERS.find((e) => e.id === aseguradora);
   const { idDB: id_rev } = REVISORES.find((e) => e.id === id_revisor);
+  const ENDOSO = 5;
 
   const birhdayDate = `${name_anio}-${name_mes}-${name_dia}`;
 
   try {
     let pool = await sql.connect(config);
-    await pool
+    const result = await pool
       .request()
       .input('vCreadoPor', creado_por)
       .input('vNoCliente', Number(no_cliente))
@@ -61,10 +65,10 @@ export async function insertDocumentAndClient({ query = {} }) {
       .input('vSexoCliente', id_idGender)
       .input('vNumerosDeTelCliente', numero_de_tel_cliente)
       .input('vNumeroDeAseguradoraPoliza', numero_de_poliza)
-      .input('vNumeroAseguradoraEndosoPoliza', numero_endoso_aseguradora)
-      .input('vNumeroSolicitudOACS', no_solicitud_acs)
+      .input('vNumeroAseguradoraEndosoPoliza', id_tipo_de_doc === ENDOSO ? numero_endoso_aseguradora : null)
+      .input('vNumeroSolicitudOACS', id_tipo_de_doc === ENDOSO ? no_solicitud_acs : null)
       .input('vIdDocumento', id_tipo_de_doc)
-      .input('vAsuntoDelEndoso', asunto_endoso)
+      .input('vAsuntoDelEndoso', id_tipo_de_doc === ENDOSO ? asunto_endoso : null)
       .input('vIdAseguradora', id_aseguradora)
       .input('vIdRamoDeSeguro', id_ramo_de_seguro)
       .input('vIdGrupoEconomico', id_grupo_economico)
@@ -79,12 +83,15 @@ export async function insertDocumentAndClient({ query = {} }) {
       .input('vUsuario', 'renato')
       .execute('SP_NUEVO_REGISTRO_DE_DATOS_DE_POLIZA');
 
-    success = true;
+    const { recordset } = result;
+    const { id_poliza } = recordset[0];
+    resultado = id_poliza;
   } catch (err) {
     console.log(err);
+    resultado = false;
   } finally {
     sql.close();
   }
 
-  return success;
+  return { resultado };
 }
