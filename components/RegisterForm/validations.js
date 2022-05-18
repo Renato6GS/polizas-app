@@ -51,6 +51,7 @@ export const schema = object()
       .required(messageErrors['mRequired']),
     created_by: string()
       .typeError(messageErrors['mStringTypeError'])
+      .email(messageErrors['mEmail'])
       .max(100, messageErrors['mStringMaxLength'])
       .required(messageErrors['mRequired']),
   })
