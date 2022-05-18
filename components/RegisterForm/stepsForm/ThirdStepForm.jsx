@@ -68,7 +68,7 @@ export default function ThirdStepForm({ register, errors, title, control }) {
       <FieldForm
         id={'created_by'}
         label={'Creado por'}
-        placeholder={'Ingrese el nombre quien registra este documento'}
+        placeholder={'Ingrese el correo electrónico de quien registra este documento'}
         register={register}
         errors={errors}
       />

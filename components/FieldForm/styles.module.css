@@ -1,7 +1,7 @@
 .fieldContainer {
   width: 100%;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -9,6 +9,6 @@
   color: red;
   position: absolute;
   width: 60%;
-  margin-top: 55px;
+  margin-top: 100px;
   left: 41%;
 }

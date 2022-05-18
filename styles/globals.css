@@ -113,4 +113,11 @@ a {
   color: var(--gray);
   line-height: 32px;
   width: 70%;
+  margin: 0;
+}
+
+.result-fields-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }

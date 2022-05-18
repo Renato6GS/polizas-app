@@ -1,5 +1,4 @@
 import Layout from 'components/Layout/Layout';
-import React from 'react';
 import { useRouter } from 'next/router';
 
 import styles from './styles.module.css';
@@ -20,16 +19,16 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
     numero_aseguradora_poliza,
     numero_aseguradora_endoso_poliza,
     numero_solicitud_numero_endoso_en_acs_poliza: acs,
+    asunto_del_endoso,
     desc_documento,
     desc_aseguradora,
     desc_grupo_economico,
+    desc_ramo_de_seguro,
     revision_snc_poliza,
     req_de_cobro_poliza,
   } = JSON.parse(informacionGeneral)[0];
 
-  const handleGoBack = async () => {
-    router.back();
-  };
+  const handleGoBack = () => router.back();
 
   return (
     <Layout>
@@ -47,7 +46,7 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
       <div className='line-horizontal'></div>
 
       <h2 className={styles.subTitle}>INFORMACIÓN GENERAL:</h2>
-      <section>
+      <section className='result-fields-section'>
         <FieldReport label={'No. cliente'} description={no_cliente} />
         <FieldReport label={'Fecha de creación'} description={fecha_de_creacion_poliza.slice(0, 10)} />
         <FieldReport label={'Registrado por'} description={creador_por_poliza} />
@@ -57,8 +56,10 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
         <FieldReport label={'No. de póliza'} description={numero_aseguradora_poliza} />
         <FieldReport label={'No. endoso aseguradora'} description={numero_aseguradora_endoso_poliza ?? '---'} />
         <FieldReport label={'No. No. Solicitud / No. Endoso en ACS'} description={acs ?? '---'} />
+        <FieldReport label={'Asunto del endoso'} description={asunto_del_endoso ?? '---'} />
         <FieldReport label={'Tipo de documento'} description={desc_documento} />
         <FieldReport label={'Aseguradora'} description={desc_aseguradora} />
+        <FieldReport label={'Ramo de seguro'} description={desc_ramo_de_seguro} />
         <FieldReport label={'Grupo económico'} description={desc_grupo_economico} />
         <FieldReport label={'Revisión snc'} description={revision_snc_poliza ?? '---'} />
         <FieldReport label={'Req. de cobro'} description={req_de_cobro_poliza ?? '---'} />
@@ -76,7 +77,7 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
           desc_estado_del_proceso: estado_proceso,
         } = el;
         return (
-          <section key={`esatdo${id}`}>
+          <section key={`esatdo${id}`} className='result-fields-section'>
             <h3 className={styles.labelTitle}>{`Estado ${id + 1}`}</h3>
             <FieldReport label={'Estado'} description={estado_proceso} />
             <FieldReport label={'Editado por'} description={editado_por_bitacora} />
