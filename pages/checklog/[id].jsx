@@ -18,6 +18,7 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
     email_cliente,
     numero_aseguradora_poliza,
     numero_aseguradora_endoso_poliza,
+    documento_aprobado,
     numero_solicitud_numero_endoso_en_acs_poliza: acs,
     asunto_del_endoso,
     desc_documento,
@@ -54,10 +55,11 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
         <FieldReport label={'Apellidos cliente'} description={apellidos_cliente} />
         <FieldReport label={'Email del cliente'} description={email_cliente} />
         <FieldReport label={'No. de póliza'} description={numero_aseguradora_poliza} />
+        <FieldReport label={'Documento aprobado'} description={documento_aprobado} />
+        <FieldReport label={'Tipo de documento'} description={desc_documento} />
         <FieldReport label={'No. endoso aseguradora'} description={numero_aseguradora_endoso_poliza ?? '---'} />
         <FieldReport label={'No. No. Solicitud / No. Endoso en ACS'} description={acs ?? '---'} />
         <FieldReport label={'Asunto del endoso'} description={asunto_del_endoso ?? '---'} />
-        <FieldReport label={'Tipo de documento'} description={desc_documento} />
         <FieldReport label={'Aseguradora'} description={desc_aseguradora} />
         <FieldReport label={'Ramo de seguro'} description={desc_ramo_de_seguro} />
         <FieldReport label={'Grupo económico'} description={desc_grupo_economico} />

@@ -14,6 +14,7 @@ export const sendMail = async ({ email, fullname, subject, message }) => {
 
   const { error } = await res.json();
   if (error) {
+    console.log('El error se provocó al generar al fetch a sendgrid');
     console.log(error);
     return;
   }

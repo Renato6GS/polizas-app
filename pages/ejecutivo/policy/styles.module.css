@@ -1,0 +1,19 @@
+.formContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  position: relative;
+  margin: 2rem 0;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 2rem;
+}

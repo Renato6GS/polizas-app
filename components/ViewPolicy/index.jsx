@@ -17,6 +17,7 @@ export default function ViewPolicy({ informacionGeneral, idPoliza, title, subTit
     email_cliente,
     desc_sexo,
     telefonos,
+    documento_aprobado,
     numero_aseguradora_poliza,
     numero_aseguradora_endoso_poliza,
     numero_solicitud_numero_endoso_en_acs_poliza: acs,
@@ -63,6 +64,7 @@ export default function ViewPolicy({ informacionGeneral, idPoliza, title, subTit
       <h2 className={styles.subTitle}>DATOS SOBRE LA PÓLIZA</h2>
       <section className='result-fields-section'>
         <FieldReport label={'No. de póliza'} description={numero_aseguradora_poliza} />
+        <FieldReport label={'Documento aprobado'} description={documento_aprobado} />
         <FieldReport label={'Tipo de documento'} description={desc_documento} />
         <FieldReport label={'No. endoso aseguradora'} description={numero_aseguradora_endoso_poliza ?? '---'} />
         <FieldReport label={'No. No. Solicitud / No. Endoso en ACS'} description={acs ?? '---'} />
