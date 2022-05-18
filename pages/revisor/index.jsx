@@ -24,7 +24,7 @@ export default function Revisor({ results }) {
             </Link>
           ),
           col6: (
-            <Link href={`/policy/${element['id_poliza']}`}>
+            <Link href={`/revisor/policy/${element['id_poliza']}`}>
               <a className='btn'>Revisar póliza</a>
             </Link>
           ),
