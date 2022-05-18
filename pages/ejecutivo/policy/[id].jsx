@@ -11,7 +11,14 @@ import { object, string, lazy } from 'yup';
 import { messageErrors } from 'constants/messageErros';
 import Loader from 'components/Loader';
 import { sendToRegister } from 'db/emails/sendToRegister';
-import { DOCUMENTO_APROBADO, ENVIADO_AL_CLIENTE, ENVIADO_A_FACTURAR, NO_CONFORME } from 'constants/processStates';
+import {
+  DOCUMENTO_APROBADO,
+  DOCUMENTO_CON_CORRECCIONES,
+  DOCUMENTO_NO_CONFORME,
+  ENVIADO_AL_CLIENTE,
+  ENVIADO_A_FACTURAR,
+  NO_CONFORME,
+} from 'constants/processStates';
 import ViewPolicy from 'components/ViewPolicy';
 
 export default function Policy({ idPoliza, informacionGeneral }) {
@@ -35,7 +42,7 @@ export default function Policy({ idPoliza, informacionGeneral }) {
         isNoConforme && isRevisadoConCorrecciones
           ? string()
               .typeError(messageErrors['mStringTypeError'])
-              .max(450, messageErrors['mStringMaxLength'])
+              .max(380, messageErrors['mStringMaxLength'])
               .required(messageErrors['mRequired'])
           : string()
       ),
@@ -57,14 +64,16 @@ export default function Policy({ idPoliza, informacionGeneral }) {
   const onSubmit = async (values) => {
     setLoading(true);
     if (isNoConforme) {
+      console.log('ha');
       const { comentario } = values;
       try {
+        await fetch(`/api/updateApprovedDocument?idPoliza=${idPoliza}&idDoc=${DOCUMENTO_NO_CONFORME}`);
         await fetch('/api/updateCheckLog', {
           body: JSON.stringify({
             idEstadoDelProceso: NO_CONFORME,
             comentario,
             idPoliza,
-            editadoPor: 'REV-5',
+            editadoPor: 'EJE-10',
             usuario: 'renato',
           }),
           headers: {
@@ -73,7 +82,7 @@ export default function Policy({ idPoliza, informacionGeneral }) {
           method: 'POST',
         });
         // Enviamos correo:
-        const message = `La póliza ${numero_aseguradora_poliza} ha sido revisada, sin embargo no cumple con algunos requerimientos. ${comentario}`;
+        const message = `La póliza ${numero_aseguradora_poliza} no es conforme. Puede proseguir con la devolución al cliente. Comentario: ${comentario}`;
         const subject = `Póliza ${numero_aseguradora_poliza} revisada`;
         const fullname = 'Revisor';
         sendToRegister({ registerEmail: creador_por_poliza, message, subject, fullname });
@@ -82,10 +91,63 @@ export default function Policy({ idPoliza, informacionGeneral }) {
         console.error;
       }
     } else if (isRevisadoConCorrecciones) {
-      console.log('revisado con correcciones');
+      console.log('revisaod con correcciones');
+      // Primer fetch: Registramos el requerimiento de cobro
+      const { comentario, req_de_cobro } = values;
+      if (comentario.length === 0 && req_de_cobro.length === 0)
+        alert('Error: Debe llenar ambos campos para esta opción');
+      const res = await fetch(`/api/updateReqCobro?idPoliza=${idPoliza}&reqCobro=${req_de_cobro}`);
+      const { results } = await res.json();
+      const { rowsAffected } = results;
+      if (rowsAffected[0]) {
+        alert('Revisado con correcciones correctamente.');
+
+        // Aprobamos el documento:
+        await fetch(`/api/updateApprovedDocument?idPoliza=${idPoliza}&idDoc=${DOCUMENTO_CON_CORRECCIONES}`);
+
+        // Segundo fetch: Actualizamos la bitácora
+        await fetch('/api/updateCheckLog', {
+          body: JSON.stringify({
+            idEstadoDelProceso: ENVIADO_AL_CLIENTE,
+            comentario: `El documento ha sido revisado por un ejecutivo de cuenta y aprobado con correcciones. ${comentario}`,
+            idPoliza,
+            editadoPor: 'EJE-10',
+            usuario: 'renato',
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        });
+        await fetch('/api/updateCheckLog', {
+          body: JSON.stringify({
+            idEstadoDelProceso: ENVIADO_A_FACTURAR,
+            comentario:
+              'El documento está esperando a ser asignado a un facturador para ser facturado. (generado automáticamente)',
+            idPoliza,
+            editadoPor: 'EJE-10',
+            usuario: 'renato',
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        });
+        // Enviamos correo:
+        const message = `Se ha finalizado con la revisión de la póliza ${numero_aseguradora_poliza} ha sido revisada, ha sido aprobado con correcciones y ahora está esperando a un facturador. Debe rectificar lo siguiente ${comentario}`;
+        const subject = `Póliza ${numero_aseguradora_poliza} aprobada con correcciones`;
+        const fullname = 'Ejecutivo de cuenta';
+        // Tercer fetch: Enviamos los correos
+        sendToRegister({ registerEmail: creador_por_poliza, message, subject, fullname });
+        sendToRegister({ registerEmail: 'lrenatogo1t@gmail.com', message, subject, fullname });
+        sendToRegister({ registerEmail: email_cliente, message, subject, fullname });
+      } else {
+        alert('Hubo un error, por favor revise el log de errores.');
+      }
     } else {
-      const { req_de_cobro } = values;
       try {
+        console.log('ha presionado revisado');
+        const { req_de_cobro } = values;
         // Primer fetch: Registramos el requerimiento de cobro
         const res = await fetch(`/api/updateReqCobro?idPoliza=${idPoliza}&reqCobro=${req_de_cobro}`);
         const { results } = await res.json();
@@ -141,6 +203,7 @@ export default function Policy({ idPoliza, informacionGeneral }) {
       }
     }
     setIsNoConforme(false);
+    setIsRevisadoConCorrecciones(false);
     setLoading(false);
   };
 
@@ -177,7 +240,7 @@ export default function Policy({ idPoliza, informacionGeneral }) {
             le asigne un facturador.
           </p>
           <p className='description'>
-            Si presiona &quot;No conforme&quot;, se generará un registro de devolución al cliente.
+            Si presiona &quot;No conforme&quot;, podrá proseguir con un registro de devolución al cliente.
           </p>
           <FieldForm
             id={'req_de_cobro'}
@@ -188,7 +251,7 @@ export default function Policy({ idPoliza, informacionGeneral }) {
           />
           <FieldForm
             id={'comentario'}
-            label={'Especifique porque es "No Conforme"'}
+            label={'Especifique porque es "No Conforme" o que debe de rectificar'}
             placeholder={'Ej.: El precio especificado no cumple con el precio acordado...'}
             register={register}
             errors={errors}
@@ -225,48 +288,3 @@ export async function getServerSideProps({ params }) {
     },
   };
 }
-
-// COSAS A HACER:
-// Cuando se presiona que está revisado sucede que:
-
-// listo
-// 1. Se le envía un correo a quien registró el documento para
-// asignarle un facturador. El mensaje del correo dirá:
-// "Se ha finalizado con la revisión del registro (número de registro);
-// proceda a asignarle un facturador"
-// Al mismo tiempo, se enviará un correo al cliente y una copia al ejecutivo
-// contando lo mismo (en principio)
-// En la bitácora se guardará el estado "Enviado al cliente"
-
-// Me falta el aprobar y lo de abajo xd
-// LISTO
-// El estado del documento será "Sí" aprobado
-
-// 2. Le llega el correo a quien lo registró y en un pequeño formulario,
-// se le pide que asigne un facturador para mandarlo a facturar.
-// Será un combobox.
-// Una vez asignado y enviado, se actualizará la bitácora con el nombre:
-// "Enviado a facturar"
-
-// Si es no conforme:
-
-// 1. Se le envía un correo a quien registró la póliza para que genere una
-// devolución o que haga algo para corregir los errores.
-// La bitácora dira "No conforme"
-
-// Si es Revisado con correcciones:
-
-// 1. Se le enviará un correo al cliente que debe de rectificar.
-// El estado del documeento se guarda como "Sí con correcciones"
-// El estado del proceso será "Enviado al cliente"
-
-// Creo que deberemos de generar un listado para aquellos documentos que tengan el estado "Sí con correcciones"
-// para que se pueda editar los datos y guardarlos.
-
-// CREO QUE ME FALTA EL DE SÍ EL DOCUMENTO HA SIDO APROBADO O NO dentro del checklog XD
-
-// // Para el facturador:
-// 1. El facturador recibe un correo con el mensaje que dice en el excel.
-// Igualmente, podrá ver la póliza y si todo está bien, dará click en Enviar,
-// y se guardará la fecha de facturado. El estado en la bitácora será ahora
-// "Facturado"
