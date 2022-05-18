@@ -22,8 +22,8 @@ export const sendToRevisor = async ({ idPoliza }) => {
     const subject = 'Control de pólizas: Asviso de nuevo registro';
     console.log('el correo del cliente es ' + email_cliente);
     console.log('el correo del revisor es ' + email_revisor);
-    // sendMail({ email: email_cliente, fullname, subject, message: messageCliente });
-    // sendMail({ email: email_revisor, fullname, subject, message: messageRevisor });
+    sendMail({ email: email_cliente, fullname, subject, message: messageCliente });
+    sendMail({ email: email_revisor, fullname, subject, message: messageRevisor });
   } catch (error) {
     console.log(error);
   }

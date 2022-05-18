@@ -1,0 +1,20 @@
+.comoBoxSection {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.comboBoxesContainer {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;;
+}
