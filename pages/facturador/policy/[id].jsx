@@ -119,6 +119,7 @@ export default function Policy({ idPoliza, informacionGeneral }) {
           asunto_del_endoso,
           acs,
         });
+        await fetch(`/api/insertAssignBilledDate?idPoliza=${idPoliza}`);
         alert('Facturado correctamente');
       } catch (error) {
         alert('Hubo un error');
