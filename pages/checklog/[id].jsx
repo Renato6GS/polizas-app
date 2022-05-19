@@ -27,6 +27,10 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
     desc_ramo_de_seguro,
     revision_snc_poliza,
     req_de_cobro_poliza,
+    id_revisor,
+    id_ejecutivo_de_cuenta,
+    id_facturador,
+    id_archivador,
   } = JSON.parse(informacionGeneral)[0];
 
   const handleGoBack = () => router.back();
@@ -65,6 +69,10 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
         <FieldReport label={'Grupo económico'} description={desc_grupo_economico} />
         <FieldReport label={'Revisión snc'} description={revision_snc_poliza ?? '---'} />
         <FieldReport label={'Req. de cobro'} description={req_de_cobro_poliza ?? '---'} />
+        <FieldReport label={'Revisor'} description={id_revisor ?? '---'} />
+        <FieldReport label={'Ejecutivo de cuenta'} description={id_ejecutivo_de_cuenta ?? '---'} />
+        <FieldReport label={'Facturador'} description={id_facturador ?? '---'} />
+        <FieldReport label={'Archivador'} description={id_archivador ?? '---'} />
       </section>
 
       <div className='line-horizontal'></div>

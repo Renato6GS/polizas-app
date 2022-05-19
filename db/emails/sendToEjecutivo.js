@@ -11,12 +11,9 @@ export const sendToEjecutivo = async ({
   no_registro,
 }) => {
   try {
-    // Falta el enviar un correo al facturador
-    console.log('Estamos a punto de hacer la consulta');
     const res = await fetch(`/api/queryGetDataExecute?idEjecutivo=${idEjecutivo}`);
     const { results } = await res.json();
     const { recordset } = results;
-    console.log(recordset);
     const { email_ejecutivo_de_cuenta } = recordset[0];
 
     const fullname = 'renatogranadosgt@gmail.com';
@@ -24,7 +21,33 @@ export const sendToEjecutivo = async ({
     const message = `No se ha podido a facturar el registro "${no_registro}" del cliente "${no_cliente} - ${nombre_cliente} ${apellidos_cliente}".
     Los errores encontrados son: ${comentario}"`;
 
-    console.log('Estamos apunto de mandar el correo a la api');
+    sendMail({ email: email_ejecutivo_de_cuenta, fullname, subject, message });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const sendToEjecutivoWithoutData = async ({ idPoliza }) => {
+  const res = await fetch(`/api/queryPolicy?idPoliza=${idPoliza}`);
+  const { results } = await res.json();
+  const { recordset } = results;
+  const {
+    id_ejecutivo_de_cuenta: idEjecutivo,
+    no_cliente,
+    nombre_cliente,
+    apellidos_cliente,
+    numero_aseguradora_poliza: no_registro,
+  } = recordset[0];
+  try {
+    const res = await fetch(`/api/queryGetDataExecute?idEjecutivo=${idEjecutivo}`);
+    const { results } = await res.json();
+    const { recordset } = results;
+    const { email_ejecutivo_de_cuenta } = recordset[0];
+
+    const fullname = 'renatogranadosgt@gmail.com';
+    const subject = `Póliza archivada ${idPoliza}`;
+    const message = `La póliza "${no_registro}" del cliente "${no_cliente} - ${nombre_cliente} ${apellidos_cliente}".
+    Ha sido archivado correctamente.`;
 
     sendMail({ email: email_ejecutivo_de_cuenta, fullname, subject, message });
   } catch (error) {
