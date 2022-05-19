@@ -5,7 +5,7 @@ export const sendToFacturador = async ({ idPoliza }) => {
   try {
     // Falta el enviar un correo al facturador
     console.log('Estamos a punto de hacer la consulta');
-    const res = await fetch(`http://localhost:3000/api/queryGetDataForBillerEmail?idPoliza=${idPoliza}`);
+    const res = await fetch(`/api/queryGetDataForBillerEmail?idPoliza=${idPoliza}`);
     const { results } = await res.json();
     const { recordset } = results;
     console.log(recordset);
@@ -31,8 +31,6 @@ export const sendToFacturador = async ({ idPoliza }) => {
     }"
     
     Asunto del endoso: "${asunto_del_endoso ?? '---'}"`;
-
-    console.log('Estamos apunto de mandar el correo a la api');
 
     sendMail({ email: email_facturador, fullname, subject, message });
   } catch (error) {

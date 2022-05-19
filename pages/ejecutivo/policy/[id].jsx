@@ -68,6 +68,7 @@ export default function Policy({ idPoliza, informacionGeneral }) {
       const { comentario } = values;
       try {
         await fetch(`/api/updateApprovedDocument?idPoliza=${idPoliza}&idDoc=${DOCUMENTO_NO_CONFORME}`);
+        await fetch(`/api/updateAssignExecutive?idPoliza=${idPoliza}&idEjecutivo=${10}`);
         await fetch('/api/updateCheckLog', {
           body: JSON.stringify({
             idEstadoDelProceso: NO_CONFORME,
@@ -102,6 +103,7 @@ export default function Policy({ idPoliza, informacionGeneral }) {
       if (rowsAffected[0]) {
         alert('Revisado con correcciones correctamente.');
 
+        await fetch(`/api/updateAssignExecutive?idPoliza=${idPoliza}&idEjecutivo=${10}`);
         // Aprobamos el documento:
         await fetch(`/api/updateApprovedDocument?idPoliza=${idPoliza}&idDoc=${DOCUMENTO_CON_CORRECCIONES}`);
 
@@ -146,7 +148,6 @@ export default function Policy({ idPoliza, informacionGeneral }) {
       }
     } else {
       try {
-        console.log('ha presionado revisado');
         const { req_de_cobro } = values;
         // Primer fetch: Registramos el requerimiento de cobro
         const res = await fetch(`/api/updateReqCobro?idPoliza=${idPoliza}&reqCobro=${req_de_cobro}`);
@@ -154,6 +155,8 @@ export default function Policy({ idPoliza, informacionGeneral }) {
         const { rowsAffected } = results;
         if (rowsAffected[0]) {
           alert('Revisado correctamente.');
+
+          await fetch(`/api/updateAssignExecutive?idPoliza=${idPoliza}&idEjecutivo=${10}`);
 
           // Aprobamos el documento:
           await fetch(`/api/updateApprovedDocument?idPoliza=${idPoliza}&idDoc=${DOCUMENTO_APROBADO}`);
