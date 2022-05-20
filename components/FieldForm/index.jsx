@@ -1,6 +1,6 @@
 import styles from './styles.module.css';
 
-export default function FieldForm({ id, label, placeholder, register, errors, typeInput = 'text' }) {
+export default function FieldForm({ id, label, placeholder, register, errors, typeInput = 'text', disabled = false }) {
   return (
     <div className={styles.fieldContainer}>
       <label className='label' htmlFor={id}>
@@ -10,6 +10,7 @@ export default function FieldForm({ id, label, placeholder, register, errors, ty
         className='input'
         type={typeInput}
         id={id}
+        disabled={disabled}
         placeholder={placeholder}
         {...register(id, { required: true })}
       />

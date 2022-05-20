@@ -4,6 +4,7 @@ import { calculateAge } from 'utils/calculateAge';
 import { useRouter } from 'next/router';
 
 import styles from './styles.module.css';
+import { eliminarPoliza } from 'db/delete/eliminarPoliza';
 
 export default function ViewPolicy({ informacionGeneral, idPoliza, title, subTitle, description }) {
   const router = useRouter();
@@ -32,6 +33,10 @@ export default function ViewPolicy({ informacionGeneral, idPoliza, title, subTit
 
   const handleGoBack = () => router.back();
 
+  const handleClickEdit = () => router.push(`/update/${idPoliza}`);
+
+  const handleClickDelete = () => eliminarPoliza({ idPoliza });
+
   return (
     <>
       <h2 className='title'>{title}</h2>
@@ -40,6 +45,12 @@ export default function ViewPolicy({ informacionGeneral, idPoliza, title, subTit
       </h2>
       <div className={styles.subtitleContainer}>
         <p className='description'>{description}</p>
+        <button className='btn' onClick={handleClickDelete}>
+          Eliminar
+        </button>
+        <button className='btn' onClick={handleClickEdit}>
+          Editar
+        </button>
         <button className='btn btn-empty' onClick={handleGoBack}>
           Regresar
         </button>
@@ -55,7 +66,7 @@ export default function ViewPolicy({ informacionGeneral, idPoliza, title, subTit
         <FieldReport label={'Apellidos cliente'} description={apellidos_cliente} />
         <FieldReport label={'Email del cliente'} description={email_cliente} />
         <FieldReport label={'Fecha de nacimiento'} description={fecNac.slice(0, 10)} />
-        <FieldReport label={'Edad'} description={age} />
+        <FieldReport label={'Edad'} description={age + ' años'} />
         <FieldReport label={'Género'} description={desc_sexo} />
         <FieldReport label={'No. de teléfono'} description={telefonos} />
       </section>
