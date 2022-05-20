@@ -1,31 +1,31 @@
 export const FACTURADORES = [
   {
-    id: 'eje1',
+    id: 'fac1',
     name: 'Billy Ayala',
     idDB: 5,
   },
   {
-    id: 'eje2',
+    id: 'fac2',
     name: 'Brayan Henández',
     idDB: 6,
   },
   {
-    id: 'eje3',
+    id: 'fac3',
     name: 'Ismael Regalado',
     idDB: 7,
   },
   {
-    id: 'eje4',
+    id: 'fac4',
     name: 'Fredy Gutiérrez',
     idDB: 8,
   },
   {
-    id: 'eje5',
+    id: 'fac5',
     name: 'Alfredo Loyo',
     idDB: 9,
   },
   {
-    id: 'eje6',
+    id: 'fac6',
     name: 'José Chacón',
     idDB: 10,
   },

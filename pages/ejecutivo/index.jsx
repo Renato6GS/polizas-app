@@ -79,9 +79,12 @@ export default function Ejecutivo({ results }) {
 
   return (
     <Layout>
-      <h2 className='title'>Vista: Revisores</h2>
-      <h2 className='sub-title'>Lista de nuevas pólizas sin revisar</h2>
-      <p className='description'>Revise el siguiente listado de pólizas.</p>
+      <h2 className='title'>Panel ejecutivos</h2>
+      <h2 className='sub-title'>Lista de pólizas revisas y no conformes</h2>
+      <p className='description'>
+        El siguiente listado es una combinación de las pólizas revisadas y no conformes por revisores, facturadores y
+        otros ejecutivos de cuenta.
+      </p>
       <div className='line-horizontal'></div>
       <table {...getTableProps()} className={styles.table}>
         <thead>

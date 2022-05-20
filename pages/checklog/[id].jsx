@@ -5,6 +5,7 @@ import styles from './styles.module.css';
 import { queryConsultarBitacora } from 'db/queries/queryConsultarBitacora';
 import { queryConsultarPoliza } from 'db/queries/queryConsultarPoliza';
 import FieldReport from 'components/FieldReport';
+import { calculateAge } from 'utils/calculateAge';
 
 export default function Checklog({ idPoliza, results, informacionGeneral }) {
   const router = useRouter();
@@ -15,7 +16,10 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
     creador_por_poliza,
     nombre_cliente,
     apellidos_cliente,
+    desc_sexo,
     email_cliente,
+    direccion_cliente,
+    telefonos,
     numero_aseguradora_poliza,
     numero_aseguradora_endoso_poliza,
     documento_aprobado,
@@ -27,7 +31,17 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
     desc_ramo_de_seguro,
     revision_snc_poliza,
     req_de_cobro_poliza,
+    fecha_de_nacimiento_cliente,
+    precio_poliza,
+    id_revisor,
+    id_ejecutivo_de_cuenta,
+    id_facturador,
+    id_archivador,
+    fecha_facturado_poliza,
+    fecha_archivado,
   } = JSON.parse(informacionGeneral)[0];
+  const { age } = calculateAge({ date: fecha_de_nacimiento_cliente });
+  console.log(fecha_de_nacimiento_cliente);
 
   const handleGoBack = () => router.back();
 
@@ -53,7 +67,12 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
         <FieldReport label={'Registrado por'} description={creador_por_poliza} />
         <FieldReport label={'Nombre cliente'} description={nombre_cliente} />
         <FieldReport label={'Apellidos cliente'} description={apellidos_cliente} />
+        <FieldReport label={'Género'} description={desc_sexo} />
+        <FieldReport label={'Fecha de nacimiento'} description={fecha_de_nacimiento_cliente.slice(0, 10)} />
+        <FieldReport label={'Edad'} description={age + ' años'} />
         <FieldReport label={'Email del cliente'} description={email_cliente} />
+        <FieldReport label={'Dirección del cliente'} description={direccion_cliente} />
+        <FieldReport label={'Teléfono del cliente'} description={telefonos} />
         <FieldReport label={'No. de póliza'} description={numero_aseguradora_poliza} />
         <FieldReport label={'Documento aprobado'} description={documento_aprobado} />
         <FieldReport label={'Tipo de documento'} description={desc_documento} />
@@ -65,6 +84,24 @@ export default function Checklog({ idPoliza, results, informacionGeneral }) {
         <FieldReport label={'Grupo económico'} description={desc_grupo_economico} />
         <FieldReport label={'Revisión snc'} description={revision_snc_poliza ?? '---'} />
         <FieldReport label={'Req. de cobro'} description={req_de_cobro_poliza ?? '---'} />
+        <FieldReport
+          label={'Precio póliza'}
+          description={
+            new Intl.NumberFormat('es-GT', { style: 'currency', currency: 'GTQ' }).format(precio_poliza) ?? '---'
+          }
+        />
+        <FieldReport label={'Revisor a cargo'} description={id_revisor ?? '---'} />
+        <FieldReport label={'Ejecutivo de cuenta a cargo'} description={id_ejecutivo_de_cuenta ?? '---'} />
+        <FieldReport label={'Facturador'} description={id_facturador ?? '---'} />
+        <FieldReport label={'Archivador'} description={id_archivador ?? '---'} />
+        <FieldReport
+          label={'Fecha de facturación'}
+          description={fecha_facturado_poliza !== null ? fecha_facturado_poliza.slice(0, 10) : '---'}
+        />
+        <FieldReport
+          label={'Fecha archivado'}
+          description={fecha_archivado !== null ? fecha_archivado.slice(0, 10) : '---'}
+        />
       </section>
 
       <div className='line-horizontal'></div>
@@ -98,8 +135,14 @@ export async function getServerSideProps({ params }) {
   const { id: idPoliza } = params;
   const res = await queryConsultarBitacora({ idPoliza });
   const { recordset } = res;
+
+  console.log('el id poliza que llega es:');
+  console.log(idPoliza);
+
   const resPoliza = await queryConsultarPoliza({ idPoliza });
   const { recordset: informacionGeneral } = resPoliza;
+  console.log('el resultado de info general es set es');
+  console.log(informacionGeneral);
 
   return {
     props: {
